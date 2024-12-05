@@ -28,6 +28,7 @@ async function run() {
         await client.connect();
 
         const coffeeCollection = client.db("coffeeDB").collection("coffee");
+        const userCollection = client.db("coffeeDB").collection("users");
 
         // Routes for CRUD operations
         // Get all coffees
@@ -84,6 +85,13 @@ async function run() {
             const id = req.params.id;
             const query = { _id: new ObjectId(id) };
             const result = await coffeeCollection.deleteOne(query);
+            res.send(result);
+        });
+
+        // User APIs
+        app.post("/users", async (req, res) => {
+            const newUser = req.body;
+            const result = await userCollection.insertOne(newUser);
             res.send(result);
         });
 
